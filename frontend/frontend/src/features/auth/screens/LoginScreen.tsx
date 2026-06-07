@@ -56,9 +56,6 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
         >
           {/* Heading */}
           <div style={{ marginBottom: 28 }}>
-            <span className="gh-eyebrow" style={{ color: 'var(--text-brand)' }}>
-              Bem-vindo de volta
-            </span>
             <h1
               className="mt-2"
               style={{
@@ -71,17 +68,6 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
             >
               Acesse sua conta
             </h1>
-            <p
-              className="mt-1"
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontWeight: 'var(--fw-regular)',
-                fontSize: 14,
-                color: 'var(--text-body)',
-              }}
-            >
-              Análise de solo e lavoura por satélite, em segundos.
-            </p>
           </div>
 
           {/* Form */}
@@ -189,7 +175,7 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
             marginTop: 24,
           }}
         >
-          © 2024 Green Horizon · Tecnologia de análise de solo acessível para todos
+          © 2026 Green Horizon · Tecnologia de análise de solo acessível para todos
         </p>
       </div>
     </div>
