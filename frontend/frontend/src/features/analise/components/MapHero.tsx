@@ -154,25 +154,28 @@ export function MapHero({ analyzed, analyzing, minHeight = 440 }: MapHeroProps) 
       {!analyzed && (
         <div
           className="absolute inset-0 flex items-center justify-center"
-          style={{ background: 'linear-gradient(180deg, rgba(3,35,24,.18), rgba(3,35,24,.42))' }}
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(3,35,24,.18), rgba(3,35,24,.42))",
+          }}
         >
           <div
             className="flex items-center gap-3"
             style={{
-              padding: '12px 20px',
-              borderRadius: 'var(--radius-pill)',
-              background: 'rgba(3,35,24,.72)',
-              backdropFilter: 'blur(6px)',
-              color: 'var(--white)',
-              fontFamily: 'var(--font-sans)',
-              fontWeight: 'var(--fw-semibold)',
+              padding: "12px 20px",
+              borderRadius: "var(--radius-pill)",
+              background: "rgba(3,35,24,.72)",
+              backdropFilter: "blur(6px)",
+              color: "var(--white)",
+              fontFamily: "var(--font-sans)",
+              fontWeight: "var(--fw-semibold)",
               fontSize: 15,
             }}
           >
             <PenTool size={18} />
             {analyzing
-              ? 'Processando imagens de satélite…'
-              : 'Desenhe o polígono da sua área no mapa'}
+              ? "Processando imagens de satélite…"
+              : "Desenhe o polígono da sua área no mapa"}
           </div>
         </div>
       )}
