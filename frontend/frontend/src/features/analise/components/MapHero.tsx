@@ -120,7 +120,7 @@ export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 4
 
   function handleChangeCoordenada(coordenadas: Coordenada[]) {
     handleChangePoints(
-      coordenadas.map(coord => ({ latitude: coord[1].toString(), longitude: coord[0].toString() }))
+      coordenadas.map(coord => ({ latitude: coord[1], longitude: coord[0] }))
     );
   }
 
