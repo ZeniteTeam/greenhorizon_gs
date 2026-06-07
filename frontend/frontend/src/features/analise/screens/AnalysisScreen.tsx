@@ -5,6 +5,7 @@ import { InputPanel } from '../components/InputPanel';
 import { MapHero } from '../components/MapHero';
 import { ResultDashboard } from '../components/ResultDashboard';
 import { GH_ANALYSES } from '../../../constants/analyses';
+import { useCreateAnalysis } from '../hooks/createAnalysisHook';
 
 interface AnalysisScreenProps {
   onSaved: () => void;
@@ -16,6 +17,10 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
   const [analyzed, setAnalyzed] = useState(true);
   const result = GH_ANALYSES[0];
 
+  const [points, setPoints] = useState([]); 
+
+  const {createAnalysis, analise, loading, error} = useCreateAnalysis();
+
   function handleAnalyze() {
     setAnalyzed(false);
     setAnalyzing(true);
@@ -23,6 +28,10 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
       setAnalyzing(false);
       setAnalyzed(true);
     }, 1500);
+  }
+
+  function handleSave() {
+    createAnalysis(points);
   }
 
   return (
@@ -79,6 +88,7 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
       <div className="flex gap-5 items-stretch">
         <div style={{ flex: '0 0 360px', display: 'flex' }}>
           <InputPanel
+            onSave={handleSave}
             crop={crop}
             setCrop={setCrop}
             onAnalyze={handleAnalyze}
@@ -86,7 +96,11 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
           />
         </div>
         <div className="flex-1 min-w-0 flex">
-          <MapHero analyzed={analyzed} analyzing={analyzing} minHeight={460} />
+          <MapHero 
+            handleChangePoints={setPoints}
+            analyzed={analyzed} 
+            analyzing={analyzing}
+             minHeight={460} />
         </div>
       </div>
 
