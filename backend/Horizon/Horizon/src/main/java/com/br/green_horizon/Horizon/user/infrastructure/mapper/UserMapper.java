@@ -12,9 +12,4 @@ public class UserMapper {
         user.setPassword(request.password);
         return user;
     }
-
-    public static AuthResponse MapToAuthResponse(String message, AuthResponse response) {
-        response.setMessage(message);
-        return response;
-    }
 }

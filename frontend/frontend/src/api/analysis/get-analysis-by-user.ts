@@ -1,8 +1,8 @@
 import api from "../axios";
 
 export interface Point {
-    latitude: string;
-    longitude: string;
+    latitude: number;
+    longitude: number;
 }
 
 export interface AnalysisRequest {
