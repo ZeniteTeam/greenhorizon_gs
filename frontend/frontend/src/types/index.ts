@@ -4,7 +4,7 @@ export type ButtonSize = 'sm' | 'md' | 'lg';
 export type BadgeTone = 'good' | 'warn' | 'alert' | 'neutral';
 export type StepState = 'active' | 'done' | 'idle';
 export type IconButtonTone = 'light' | 'tint' | 'dark' | 'plain';
-export type NavRoute = 'analysis' | 'history';
+export type NavRoute = 'analysis' | 'history' | 'login';
 
 export interface NavLink {
   label: string;
