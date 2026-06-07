@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("")
+@RestController()
+@RequestMapping("analysis")
 public class AnaliseController {
 
     private final AnaliseFacade facade;

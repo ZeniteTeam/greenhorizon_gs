@@ -13,6 +13,7 @@
     "@geoman-io/leaflet-geoman-free": "^2.19.3",
     "@tailwindcss/vite": "^4.3.0",
     "@turf/turf": "^7.3.5",
+    "axios": "^1.17.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.17.0",
     "react": "^19.2.6",
