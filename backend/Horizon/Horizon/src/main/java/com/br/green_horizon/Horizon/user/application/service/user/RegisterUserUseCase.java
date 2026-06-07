@@ -15,14 +15,15 @@ public class RegisterUserUseCase {
         this.userRepository = userRepository;
     }
 
-    public User register(RegisterRequest request) {
+    public Boolean register(RegisterRequest request) {
         if (userRepository.findByEmail(request.email).isPresent()) {
             throw new IllegalArgumentException("Email já registrado");
         }
 
         User u = UserMapper.MapRequestToUser(request, new User());
+        userRepository.save(u);
 
-        return userRepository.save(u);
+        return true;
     }
 
 }
