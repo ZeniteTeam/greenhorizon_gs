@@ -26,7 +26,7 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-12">
       {/* Heading */}
       <div className="flex items-end justify-between gap-6 flex-wrap">
         <div>
@@ -54,10 +54,11 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
               lineHeight: 'var(--lh-snug)',
               color: 'var(--text-body)',
               maxWidth: 620,
+              marginTop: 10,
             }}
           >
             Desenhe sua área no mapa e receba um diagnóstico NDVI com interpretação e
-            recomendações — sem custo, em segundos.
+            recomendações, em segundos.
           </p>
         </div>
         <div className="flex gap-3">
