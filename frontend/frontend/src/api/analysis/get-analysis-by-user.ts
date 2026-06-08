@@ -6,8 +6,10 @@ export interface Point {
 }
 
 export interface AnalysisRequest {
-    Points : Point [];
+    tipo: string;
+    points : Point [];
 };
+
 export interface AnalysisResponse {
     id : number;
     ndviMedia : number;
@@ -18,12 +20,15 @@ export interface AnalysisResponse {
     recomendacao : string;
     temporada : string
     safra : string;
+    coberturaVegetal : number;
+    areaTotalPercentual : number;
 };
 
 
-export async function getAnalysisByUser(points: Point[]): Promise<AnalysisResponse> {
+export async function getAnalysisByUser(request: AnalysisRequest): Promise<AnalysisResponse> {
     try {
-        const response = await api.post<AnalysisResponse>("/analysis", { Points: points });
+        console.log(request);
+        const response = await api.post<AnalysisResponse>("/analysis", request );
         return response.data;
     } catch (error) {
         console.error("Error ao criar analise:", error);

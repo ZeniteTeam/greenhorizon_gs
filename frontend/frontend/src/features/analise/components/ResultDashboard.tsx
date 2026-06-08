@@ -7,8 +7,23 @@ import { RecommendationList } from '../../../components/RecommendationList';
 import type { Analysis } from '../../../types';
 
 interface ResultDashboardProps {
+  result: Analise;
   analysis: Analysis;
   compact?: boolean;
+}
+
+interface Analise {
+  id: number;
+  ndviMedia: number;
+  tipo: string;
+  clima: string;
+  date: string;
+  status: string;
+  recomendacao: string;
+  temporada: string;
+  safra: string;
+  coberturaVegetal: number;
+  areaTotalPercentual: number;
 }
 
 function fmtNdvi(v: number) {
@@ -21,7 +36,7 @@ function VerdictIcon({ verdict }: { verdict: string }) {
   return <AlertOctagon size={15} />;
 }
 
-export function ResultDashboard({ analysis: a, compact = false }: ResultDashboardProps) {
+export function ResultDashboard({ analysis: a, compact = false, result }: ResultDashboardProps) {
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -62,26 +77,26 @@ export function ResultDashboard({ analysis: a, compact = false }: ResultDashboar
       <div className="grid grid-cols-4 gap-4">
         <MetricCard
           label="NDVI MÉDIO"
-          value={fmtNdvi(a.ndvi)}
+          value={fmtNdvi(result.ndviMedia)}
           caption="Faixa ideal: 0,60–0,80"
           icon={<Leaf size={22} />}
         />
         <MetricCard
           label="ÁREA ANALISADA"
-          value={a.area}
+          value={`${result.areaTotalPercentual.toString()} ha`}
           caption="Polígono selecionado"
           emphasis="neutral"
           icon={<Maximize size={22} />}
         />
         <MetricCard
           label="COBERTURA VEGETAL"
-          value={`${a.coverage}%`}
+          value={`${result.coberturaVegetal.toFixed(2).replace('.', ',')}%`}
           caption="Boa cobertura"
           icon={<Sprout size={22} />}
         />
         <MetricCard
           label="VIGOR DA CULTURA"
-          value={a.vigor}
+          value={result.status}
           caption={a.verdictLabel}
           icon={<TrendingUp size={22} />}
         />
@@ -101,10 +116,10 @@ export function ResultDashboard({ analysis: a, compact = false }: ResultDashboar
             }}
           >
             Medido:{' '}
-            <b style={{ color: 'var(--text-brand)' }}>{fmtNdvi(a.ndvi)}</b>
+            <b style={{ color: 'var(--text-brand)' }}>{fmtNdvi(result.ndviMedia)}</b>
           </span>
         </div>
-        <NdviScale value={a.ndvi} ideal={[0.6, 0.8]} />
+        <NdviScale value={result.ndviMedia} ideal={[0.6, 0.8]} />
       </Card>
 
       {/* Interpretation + Recommendations */}

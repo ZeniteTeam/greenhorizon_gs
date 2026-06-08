@@ -31,7 +31,7 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
   }
 
   function handleSave() {
-    createAnalysis(points);
+    createAnalysis({points, tipo: crop});
   }
 
   return (
@@ -105,9 +105,9 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
       </div>
 
       {/* Results */}
-      {analyzed && (
+      {analyzed && analise && (
         <div className="gh-reveal">
-          <ResultDashboard analysis={result} />
+          <ResultDashboard analysis={result} result={analise} />
         </div>
       )}
     </div>

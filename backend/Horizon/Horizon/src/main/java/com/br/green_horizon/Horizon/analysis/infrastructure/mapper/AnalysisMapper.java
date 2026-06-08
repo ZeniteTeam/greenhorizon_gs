@@ -22,14 +22,13 @@ public class AnalysisMapper {
             String json = response.getBody() != null ? response.getBody().toString() : null;
             Map<String, Object> data = objectMapper.readValue(json, new TypeReference<>() {});
 
-            analise.setNdviMedia(((Number) data.get("ndvi_media")).doubleValue());
-            analise.setTipo(TipoPlantio.valueOf((String) data.get("tipo")));
-            analise.setClima(Clima.valueOf((String) data.get("clima")));
+            analise.setNdviMedia(((Number) data.get("ndvi")).doubleValue());
+//            analise.setImage((String) data.get("html"));
             analise.setStatus(Status.valueOf((String) data.get("status")));
             analise.setRecomendacao((String) data.get("recomendacao"));
             analise.setDate(new Date());
-            analise.setTemporada((String) data.get("temporada"));
-            analise.setSafra((String) data.get("safra"));
+            analise.setAreaTotalPorHectar(((Number) data.get("area_total_ha")).doubleValue());
+            analise.setCoberturaVegetalPercentual(((Number)data.get("cobertura_vegetal_percentual")).doubleValue());
 
             return analise;
         } catch (Exception e) {
@@ -47,6 +46,8 @@ public class AnalysisMapper {
         response.setDate(analysis.getDate());
         response.setTemporada(analysis.getTemporada());
         response.setSafra(analysis.getSafra());
+        response.setCoberturaVegetal(analysis.getCoberturaVegetalPercentual());
+        response.setAreaTotalPercentual(analysis.getAreaTotalPorHectar());
         return response;
     }
 }

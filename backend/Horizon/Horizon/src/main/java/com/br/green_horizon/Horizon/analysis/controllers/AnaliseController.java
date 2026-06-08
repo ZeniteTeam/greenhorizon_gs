@@ -31,7 +31,7 @@ public class AnaliseController {
         return ResponseEntity.ok(list);
     }
 
-    @PostMapping("")
+    @PostMapping()
     public ResponseEntity<CreateAnalysisResponse> CreateNewAnalysis(@RequestBody CreateAnalysisRequest request) throws Exception {
         var analysis = facade.CreateAnalysis(request);
         return ResponseEntity.ok(analysis);

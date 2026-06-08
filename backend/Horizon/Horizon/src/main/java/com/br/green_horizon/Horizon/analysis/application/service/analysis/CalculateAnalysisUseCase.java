@@ -1,6 +1,7 @@
 package com.br.green_horizon.Horizon.analysis.application.service.analysis;
 
 import com.br.green_horizon.Horizon.analysis.application.entities.Analise;
+import com.br.green_horizon.Horizon.analysis.application.enums.TipoPlantio;
 import com.br.green_horizon.Horizon.analysis.data.request.CreateAnalysisRequest;
 import com.br.green_horizon.Horizon.analysis.data.response.CreateAnalysisResponse;
 import com.br.green_horizon.Horizon.analysis.external.api.CalculationApiClient;
@@ -21,13 +22,14 @@ public class CalculateAnalysisUseCase {
             var apiResponse = calculationApiClient.calculate(request);
 
             var analysis =  AnalysisMapper.MapApiToAnalysis(apiResponse, new Analise());
+            analysis.setTipo(TipoPlantio.valueOf(request.tipo()));
 
             analiseRepository.save(analysis);
 
             return AnalysisMapper.MapAnalysisToCreateResponse(analysis, new CreateAnalysisResponse());
 
         } catch (Exception e) {
-          throw new Exception("Erro durante chamada de api");
+          throw new Exception("Erro durante chamada de api", e);
         }
     }
 

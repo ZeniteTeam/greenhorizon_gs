@@ -29,4 +29,6 @@ public class CreateAnalysisResponse {
     private Date date;
     private String temporada;
     private String safra;
+    private Double coberturaVegetal;
+    private Double areaTotalPercentual;
 }
