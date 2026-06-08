@@ -13,7 +13,7 @@ export interface AuthResponse {
 
 export async function userLogin(AuthRequest: AuthRequest): Promise<AuthResponse> {
     try {
-        const response = await api.post<AuthResponse>("/users/login", { AuthRequest: AuthRequest });
+        const response = await api.post<AuthResponse>("/users/login", AuthRequest);
         return response.data;
     } catch (error) {
         console.error("Error ao realizar login:", error);
