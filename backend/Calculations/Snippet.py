@@ -1,20 +1,33 @@
 import ee
 import geemap
 
-def calculate():
+
+def build_polygon(points):
+    if len(points) < 3:
+        raise ValueError("É necessário informar pelo menos 3 pontos para formar uma área.")
+
+    coordinates = []
+
+    for point in points:
+        coordinates.append([
+            point.longitude,
+            point.latitude
+        ])
+
+    if coordinates[0] != coordinates[-1]:
+        coordinates.append(coordinates[0])
+
+    return coordinates
+
+def calculate(points):
     # Autentica e inicializa o Google Earth Engine
     ee.Authenticate()
 
     ee.Initialize(project='powerful-balm-394623')
 
-    # Área rural de exemplo no Brasil
-    area = ee.Geometry.Polygon([
-            [-53.8508, -24.7668],
-            [-53.8478, -24.7668],
-            [-53.8478, -24.7642],
-            [-53.8508, -24.7642],
-            [-53.8508, -24.7668]
-    ])
+    # Coordenadas
+    coordinates = build_polygon(points)
+    area = ee.Geometry.Polygon(coordinates)
 
     # Carrega a coleção Sentinel-2 Surface Reflectance Harmonized
 
@@ -40,6 +53,43 @@ def calculate():
     )
     # Pega o valor numérico do NDVI médio
     ndvi_value = ndvi_mean.get("NDVI").getInfo()
+    ndvi_value = round(ndvi_value, 2)
+    
+    #Cálculo da cobertura vegetal da área
+    vegetation_mask = ndvi.gt(0.3).rename("vegetacao")
+    
+    # Calcula a área vegetada em m²
+    vegetation_area_image = vegetation_mask.multiply(ee.Image.pixelArea()).rename("area_vegetada")
+
+    vegetation_area_stats = vegetation_area_image.reduceRegion(
+        reducer=ee.Reducer.sum(),
+        geometry=area,
+        scale=10,
+        maxPixels=1e9
+    )
+
+    # Área vegetada em hectares
+    area_vegetada_m2 = vegetation_area_stats.get("area_vegetada")
+    area_vegetada_ha = ee.Number(area_vegetada_m2).divide(10000).getInfo()
+
+    # Área total do polígono em hectares
+    area_total_ha = area.area().divide(10000).getInfo()
+    
+    area_total_ha = round(area_total_ha, 1)
+
+    # Percentual de cobertura vegetal
+    cobertura_vegetal_percentual = (area_vegetada_ha / area_total_ha) * 100
+    
+    cobertura_vegetal_percentual = round(cobertura_vegetal_percentual, 1)
+
+    #Tratamento caso o NDVI seja "None"
+    if ndvi_value is None:
+        return {
+            "recomendacao": "Não foi possível calcular o NDVI para essa área e período. Tente outra área ou outro intervalo de datas.",
+            "status": "Sem dados",
+            "ndvi": None,
+            "html": None
+        }
 
     # Classifica a saúde da plantação com base no NDVI médio
     if ndvi_value < 0.3:
@@ -52,7 +102,7 @@ def calculate():
         status = "Bom"
         recomendacao = "A vegetação apresenta bom vigor. Manter o acompanhamento periódico da área."
 
-    # Exibe os resultados no notebook
+
     # Cria o mapa
     Map = geemap.Map()
 
@@ -88,6 +138,8 @@ def calculate():
         "recomendacao": recomendacao,
         "status": status,
         "ndvi": ndvi_value,
+        "area_total_ha": area_total_ha,
+        "cobertura_vegetal_percentual": cobertura_vegetal_percentual,
         "html": Map.to_html()
     }
 

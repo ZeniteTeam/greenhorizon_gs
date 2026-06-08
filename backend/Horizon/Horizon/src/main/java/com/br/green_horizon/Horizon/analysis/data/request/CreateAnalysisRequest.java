@@ -6,8 +6,8 @@ public class CreateAnalysisRequest {
     List<CreatePoint> points;
 
     public class CreatePoint {
-        Float latitude;
-        Float longitude;
+        Double latitude;
+        Double longitude;
     }
 
 }
