@@ -37,13 +37,14 @@ function StepRow({ n, state, title, children }: StepRowProps) {
 }
 
 interface InputPanelProps {
+  onSave: () => void;
   crop: string;
   setCrop: (crop: string) => void;
   onAnalyze: () => void;
   analyzing: boolean;
 }
 
-export function InputPanel({ crop, setCrop, onAnalyze, analyzing }: InputPanelProps) {
+export function InputPanel({ onSave, crop, setCrop, onAnalyze, analyzing }: InputPanelProps) {
   return (
     <Card
       padding={24}
@@ -120,7 +121,7 @@ export function InputPanel({ crop, setCrop, onAnalyze, analyzing }: InputPanelPr
         size="lg"
         fullWidth
         disabled={!crop || analyzing}
-        onClick={onAnalyze}
+        onClick={onSave}
         iconLeft={analyzing ? undefined : <ScanLine size={22} />}
       >
         {analyzing ? 'Analisando…' : 'Analisar área'}

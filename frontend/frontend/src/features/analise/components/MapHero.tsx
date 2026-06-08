@@ -9,6 +9,7 @@ import React from 'react';
 import L from 'leaflet';
 
 interface MapHeroProps {
+  handleChangePoints: (points: any) => void;
   analyzed: boolean;
   analyzing: boolean;
   minHeight?: number;
@@ -96,17 +97,14 @@ const GeomanControles: React.FC<GeomanControlesProps> = ({ onPerimetroCalculado,
   return null;
 };
 
-export function MapHero({ analyzed, analyzing, minHeight = 440 }: MapHeroProps) {
+export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 440 }: MapHeroProps) {
 
   const [perimetro, setPerimetro] = useState<number>(0);
   const [coordenadas, setCoordenadas] = useState<Coordenada[]>([]);
 
   useEffect(() => {
     if (coordenadas.length > 0) {
-      console.log("=== LISTA DE COORDENADAS CAPTURADAS ===");
-      console.log("Total de pontos:", coordenadas.length);
 
-      // Mostra como uma tabela formatada lindamente no console do navegador
       console.table(
         coordenadas.map((coord, index) => ({
           Ponto: index + 1,
@@ -120,6 +118,13 @@ export function MapHero({ analyzed, analyzing, minHeight = 440 }: MapHeroProps) 
     }
   }, [coordenadas]);
 
+  function handleChangeCoordenada(coordenadas: Coordenada[]) {
+    handleChangePoints(
+      coordenadas.map(coord => ({ latitude: coord[1], longitude: coord[0] }))
+    );
+  }
+
+  
   return (
     <div
       className="relative w-full overflow-hidden"
@@ -148,7 +153,7 @@ export function MapHero({ analyzed, analyzing, minHeight = 440 }: MapHeroProps) 
 
         <GeomanControles
           onPerimetroCalculado={setPerimetro}
-          onCoordenadasSalvas={setCoordenadas}
+          onCoordenadasSalvas={handleChangeCoordenada}
         />
       </MapContainer>
 

@@ -22,6 +22,8 @@ public class CalculateAnalysisUseCase {
 
             var analysis =  AnalysisMapper.MapApiToAnalysis(apiResponse, new Analise());
 
+            analiseRepository.save(analysis);
+
             return AnalysisMapper.MapAnalysisToCreateResponse(analysis, new CreateAnalysisResponse());
 
         } catch (Exception e) {
