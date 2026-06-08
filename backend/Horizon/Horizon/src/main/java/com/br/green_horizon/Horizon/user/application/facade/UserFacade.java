@@ -5,7 +5,9 @@ import com.br.green_horizon.Horizon.user.application.service.user.RegisterUserUs
 import com.br.green_horizon.Horizon.user.data.request.AuthRequest;
 import com.br.green_horizon.Horizon.user.data.request.RegisterRequest;
 import com.br.green_horizon.Horizon.user.data.response.AuthResponse;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserFacade {
     private final LoginUserUseCase loginUserUseCase;
     private final RegisterUserUseCase registerUserUseCase;

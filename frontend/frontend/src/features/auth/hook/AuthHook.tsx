@@ -13,8 +13,11 @@ export function useLogin() {
             const response = await userLogin(AuthRequest);
 
             setAuth(response);
+            console.log("não entrou no erro")
         } catch (err) {
-            setError("Falha ao criar análise. Por favor, tente novamente.");
+            setError("Falha ao realizar o login.");
+            throw error;
+
         } finally {
             setLoading(false);
         }

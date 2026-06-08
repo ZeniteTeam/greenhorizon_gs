@@ -4,6 +4,7 @@ import { Button } from '../../../components/Button';
 import { Input } from '../../../components/Input';
 import { Logo } from '../../../components/Logo';
 import type { NavRoute } from '../../../types';
+import { useLogin } from '../hook/AuthHook';
 
 interface LoginScreenProps {
   navigate: (route: NavRoute) => void;
@@ -13,9 +14,21 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  function handleLogin(e: React.FormEvent) {
+  const { login, user, loading, error } = useLogin();
+
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
-    navigate('analysis');
+
+    try {
+
+      await login({ email, password });
+      navigate('analysis');
+
+    } catch (error) {
+
+      alert("E-mail ou senha incorretos. Tente novamente.");
+
+    }
   }
 
   return (

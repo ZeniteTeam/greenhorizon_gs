@@ -6,8 +6,6 @@ import com.br.green_horizon.Horizon.user.data.response.AuthResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RequestMapping("/users")
 @RestController("")
 public class UserController {
@@ -16,7 +14,7 @@ public class UserController {
 
     public UserController(UserFacade facade) { this.facade = facade; }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
         var user = facade.Login(request);
         return ResponseEntity.ok(user);
