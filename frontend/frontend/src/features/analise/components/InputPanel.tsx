@@ -26,6 +26,7 @@ function StepRow({ n, state, title, children }: StepRowProps) {
             fontWeight: 'var(--fw-semibold)',
             fontSize: 16,
             color: 'var(--text-heading)',
+            marginBottom: 8
           }}
         >
           {title}
@@ -75,7 +76,7 @@ export function InputPanel({ onSave, crop, setCrop, onAnalyze, analyzing }: Inpu
         </p>
       </div>
 
-      <StepRow n={1} state="done" title="Localize sua área">
+      <StepRow n={1} state="active" title="Localize sua área">
         <Input icon={<Search size={18} />} placeholder="Buscar no Google Maps" />
         <div
           className="flex gap-3 mt-3"
