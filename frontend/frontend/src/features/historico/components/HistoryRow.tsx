@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react';
 import { Badge } from '../../../components/Badge';
 import type { Analysis } from '../../../types';
+import { formatDate } from '../../../util/formateDate';
 
 interface HistoryRowProps {
   analysis: Analysis;
@@ -76,7 +77,7 @@ export function HistoryRow({ analysis: a, onOpen }: HistoryRowProps) {
             color: 'var(--text-heading)',
           }}
         >
-          {a.date}
+          {formatDate(a.date)}
         </span>
       </span>
 

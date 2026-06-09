@@ -6,6 +6,7 @@ import com.br.green_horizon.Horizon.analysis.application.service.analysis.GetAll
 import com.br.green_horizon.Horizon.analysis.application.service.analysis.GetAnalysisByUserUseCase;
 import com.br.green_horizon.Horizon.analysis.data.request.CreateAnalysisRequest;
 import com.br.green_horizon.Horizon.analysis.data.response.CreateAnalysisResponse;
+import com.br.green_horizon.Horizon.analysis.data.response.GetHistoricoListResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class AnaliseFacade {
         return getAllAnalysisUseCase.GetAll();
     }
 
-    public List<Analise> GetById(long id) throws Exception {
+    public List<GetHistoricoListResponse> GetById(long id) throws Exception {
         return getAnalysisByUserUseCase.GetByUser(id);
     }
 

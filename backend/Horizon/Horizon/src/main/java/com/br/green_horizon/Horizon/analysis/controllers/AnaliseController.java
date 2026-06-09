@@ -4,6 +4,7 @@ import com.br.green_horizon.Horizon.analysis.application.entities.Analise;
 import com.br.green_horizon.Horizon.analysis.application.facade.AnaliseFacade;
 import com.br.green_horizon.Horizon.analysis.data.request.CreateAnalysisRequest;
 import com.br.green_horizon.Horizon.analysis.data.response.CreateAnalysisResponse;
+import com.br.green_horizon.Horizon.analysis.data.response.GetHistoricoListResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,7 +27,7 @@ public class AnaliseController {
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity<List<Analise>> GetByUserId(@PathVariable Long id) throws Exception {
+    public ResponseEntity<List<GetHistoricoListResponse>> GetByUserId(@PathVariable Long id) throws Exception {
         var list = facade.GetById(id);
         return ResponseEntity.ok(list);
     }

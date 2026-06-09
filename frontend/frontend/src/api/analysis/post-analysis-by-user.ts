@@ -5,7 +5,18 @@ export interface Point {
     longitude: number;
 }
 
+export interface InterpretacaoDto {
+    id: number;
+    descricao: string;
+}
+
+export interface RecomendacaoDto {
+    id: number;
+    descricao: string;
+}
+
 export interface AnalysisRequest {
+    email: string;
     tipo: string;
     points : Point [];
 };
@@ -17,17 +28,18 @@ export interface AnalysisResponse {
     clima : string;
     date : string;
     status : string;
-    recomendacao : string;
-    temporada : string
+    recomendacao : RecomendacaoDto [];
+    interpretacao : InterpretacaoDto [];
+    temporada : string;
     safra : string;
     coberturaVegetal : number;
     areaTotalPercentual : number;
+    tileUrl : string;
 };
 
 
-export async function getAnalysisByUser(request: AnalysisRequest): Promise<AnalysisResponse> {
+export async function postAnalysisByUser(request: AnalysisRequest): Promise<AnalysisResponse> {
     try {
-        console.log(request);
         const response = await api.post<AnalysisResponse>("/analysis", request );
         return response.data;
     } catch (error) {

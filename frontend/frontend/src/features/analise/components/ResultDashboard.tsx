@@ -4,7 +4,8 @@ import { MetricCard } from '../../../components/MetricCard';
 import { NdviScale } from '../../../components/NdviScale';
 import { Badge } from '../../../components/Badge';
 import { RecommendationList } from '../../../components/RecommendationList';
-import type { Analysis } from '../../../types';
+import type { Analysis, InterpretacaoDto } from '../../../types';
+import type { RecomendacaoDto } from '../../../api/analysis/post-analysis-by-user';
 
 interface ResultDashboardProps {
   result: Analise;
@@ -19,7 +20,8 @@ interface Analise {
   clima: string;
   date: string;
   status: string;
-  recomendacao: string;
+  recomendacao: RecomendacaoDto [];
+  interpretacao: InterpretacaoDto [];
   temporada: string;
   safra: string;
   coberturaVegetal: number;
@@ -131,14 +133,14 @@ export function ResultDashboard({ analysis: a, compact = false, result }: Result
           <RecommendationList
             title="Interpretação"
             icon={<Microscope size={22} />}
-            items={[a.interpretation]}
+            items={result.interpretacao ? result.interpretacao : []}
           />
         </Card>
         <Card tint style={{ padding: 24 }}>
           <RecommendationList
             title="Recomendações"
             icon={<ClipboardList size={22} />}
-            items={a.recommendations}
+            items={result.recomendacao ? result.recomendacao : []}
           />
         </Card>
       </div>

@@ -25,7 +25,7 @@ public class LoginUserUseCase {
             throw new RuntimeException("Usuário ou senha inválidos");
         }
 
-        return new AuthResponse(user.getUsername(), user.getEmail());
+        return new AuthResponse(user.getId(), user.getUsername(), user.getEmail());
     }
 
 

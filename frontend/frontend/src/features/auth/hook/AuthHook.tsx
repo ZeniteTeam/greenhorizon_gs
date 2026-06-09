@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userLogin, type AuthRequest, type AuthResponse } from "../../../api/user/user-login";
+import { useAuthStore } from "../../../store/authStore";
 
 export function useLogin() {
     const [auth, setAuth] = useState<AuthResponse>();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const setUser = useAuthStore((s) => s.setUser);
 
     async function login(AuthRequest: AuthRequest) {
         try {
@@ -13,11 +15,10 @@ export function useLogin() {
             const response = await userLogin(AuthRequest);
 
             setAuth(response);
-            console.log("não entrou no erro")
+            setUser(response.id, response.username, response.email);
         } catch (err) {
             setError("Falha ao realizar o login.");
-            throw error;
-
+            throw err;
         } finally {
             setLoading(false);
         }

@@ -100,7 +100,9 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
             handleChangePoints={setPoints}
             analyzed={analyzed} 
             analyzing={analyzing}
-             minHeight={460} />
+            minHeight={460}
+            tileUrl={analise?.tileUrl}
+            />
         </div>
       </div>
 

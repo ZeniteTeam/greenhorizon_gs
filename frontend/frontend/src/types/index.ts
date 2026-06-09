@@ -12,6 +12,16 @@ export interface NavLink {
   onClick: () => void;
 }
 
+export interface RecomedacaoDto {
+  id: number;
+  descricao: string;
+}
+
+export interface InterpretacaoDto {
+  id: number;
+  descricao: string;
+}
+
 export interface Analysis {
   id: string;
   crop: string;
@@ -24,8 +34,14 @@ export interface Analysis {
   vigor: string;
   verdict: Verdict;
   verdictLabel: string;
-  interpretation: string;
-  recommendations: string[];
+  interpretation: InterpretacaoDto[];
+  recommendations: RecomedacaoDto[];
+  ndviMedia?: number;
+  areaTotalPercentual?: number;
+  coberturaVegetal?: number;
+  status?: string;
+  clima?: string;
+  temporada?: string;
 }
 
 export interface Crop {

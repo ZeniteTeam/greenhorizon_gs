@@ -3,6 +3,7 @@ import { X } from 'lucide-react';
 import { IconButton } from '../../../components/IconButton';
 import { ResultDashboard } from '../../analise/components/ResultDashboard';
 import type { Analysis } from '../../../types';
+import { formatDate } from '../../../util/formateDate';
 
 interface AnalysisModalProps {
   analysis: Analysis | null;
@@ -19,6 +20,23 @@ export function AnalysisModal({ analysis: a, onClose }: AnalysisModalProps) {
   }, [onClose]);
 
   if (!a) return null;
+
+  const result = {
+    id: Number(a.id),
+    ndviMedia: a.ndviMedia ?? a.ndvi,
+    tipo: a.crop,
+    clima: a.clima ?? '',
+    date: a.date,
+    status: a.status ?? '',
+    recomendacao: a.recommendations,
+    interpretacao: a.interpretation,
+    temporada: a.temporada ?? '',
+    safra: a.location,
+    coberturaVegetal: a.coberturaVegetal ?? a.coverage,
+    areaTotalPercentual: a.areaTotalPercentual ?? parseFloat(a.area),
+  };
+
+  console.log("resyldsa dsa",result);
 
   return (
     <div
@@ -79,7 +97,7 @@ export function AnalysisModal({ analysis: a, onClose }: AnalysisModalProps) {
                   color: 'rgba(255,255,255,0.7)',
                 }}
               >
-                {a.location} · {a.date}
+                {a.location} · {formatDate(a.date)}
               </div>
             </div>
           </div>
@@ -98,7 +116,7 @@ export function AnalysisModal({ analysis: a, onClose }: AnalysisModalProps) {
 
         {/* Body */}
         <div style={{ padding: 28 }}>
-          <ResultDashboard analysis={a} compact />
+          <ResultDashboard analysis={a} result={result} compact />
         </div>
       </div>
     </div>

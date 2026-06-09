@@ -1,13 +1,19 @@
 import type { ReactNode } from 'react';
 
+interface Item {
+    id: number;
+    descricao: string;  
+}
+
 interface RecommendationListProps {
   title?: string;
   icon?: ReactNode;
-  items: string[];
+  items: Item[];
   ordered?: boolean;
 }
 
 export function RecommendationList({ title, icon, items, ordered = false }: RecommendationListProps) {
+  console.log(items)
   return (
     <div className="flex flex-col gap-4">
       {(title || icon) && (
@@ -56,7 +62,7 @@ export function RecommendationList({ title, icon, items, ordered = false }: Reco
                 color: 'var(--text-body)',
               }}
             >
-              {item}
+              {item.descricao}
             </span>
           </li>
         ))}

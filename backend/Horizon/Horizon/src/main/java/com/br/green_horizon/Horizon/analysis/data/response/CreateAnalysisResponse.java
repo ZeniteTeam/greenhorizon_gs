@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,10 +26,15 @@ public class CreateAnalysisResponse {
     private Clima clima;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private String recomendacao;
+    private List<RecomendacaoDto> recomendacao;
+    private List<InterpretacaoDto> interpretacao;
     private Date date;
     private String temporada;
     private String safra;
     private Double coberturaVegetal;
     private Double areaTotalPercentual;
+    private String tileUrl;
+
+
+
 }

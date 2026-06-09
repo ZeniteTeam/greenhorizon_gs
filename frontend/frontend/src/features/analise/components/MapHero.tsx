@@ -13,6 +13,7 @@ interface MapHeroProps {
   analyzed: boolean;
   analyzing: boolean;
   minHeight?: number;
+  tileUrl?: string;
 }
 
 type Coordenada = [number, number];
@@ -97,7 +98,7 @@ const GeomanControles: React.FC<GeomanControlesProps> = ({ onPerimetroCalculado,
   return null;
 };
 
-export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 440 }: MapHeroProps) {
+export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 440, tileUrl }: MapHeroProps) {
 
   const [perimetro, setPerimetro] = useState<number>(0);
   const [coordenadas, setCoordenadas] = useState<Coordenada[]>([]);
@@ -130,10 +131,9 @@ export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 4
       className="relative w-full overflow-hidden"
       style={{
         minHeight,
-        height: '100%',
-        borderRadius: 'var(--radius-lg)',
-        boxShadow: 'var(--shadow-card)',
-        // background: 'url(/imagery/hero-map.png) center / cover no-repeat',
+        height: "100%",
+        borderRadius: "var(--radius-lg)",
+        boxShadow: "var(--shadow-card)",
       }}
     >
       <MapContainer
@@ -146,10 +146,10 @@ export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 4
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          {...({
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          })}
+          attribution="&copy; OpenStreetMap contributors"
         />
+
+        {tileUrl && <TileLayer url={tileUrl} opacity={0.7} />}
 
         <GeomanControles
           onPerimetroCalculado={setPerimetro}

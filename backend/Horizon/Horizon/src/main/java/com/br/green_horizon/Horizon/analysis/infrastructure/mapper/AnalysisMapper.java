@@ -14,18 +14,13 @@ import java.util.Map;
 
 public class AnalysisMapper {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static Analise MapApiToAnalysis(Object apiResponse, Analise analise) {
+    public static Analise MapApiToAnalysis(Map<String, Object> data, Analise analise) {
         try {
-            ResponseEntity<?> response = (ResponseEntity<?>) apiResponse;
-            String json = response.getBody() != null ? response.getBody().toString() : null;
-            Map<String, Object> data = objectMapper.readValue(json, new TypeReference<>() {});
 
             analise.setNdviMedia(((Number) data.get("ndvi")).doubleValue());
-//            analise.setImage((String) data.get("html"));
+            analise.setTileUrl((String) data.get("tile_url"));
             analise.setStatus(Status.valueOf((String) data.get("status")));
-            analise.setRecomendacao((String) data.get("recomendacao"));
             analise.setDate(new Date());
             analise.setAreaTotalPorHectar(((Number) data.get("area_total_ha")).doubleValue());
             analise.setCoberturaVegetalPercentual(((Number)data.get("cobertura_vegetal_percentual")).doubleValue());
@@ -42,12 +37,14 @@ public class AnalysisMapper {
         response.setTipo(analysis.getTipo());
         response.setClima(analysis.getClima());
         response.setStatus(analysis.getStatus());
-        response.setRecomendacao(analysis.getRecomendacao());
         response.setDate(analysis.getDate());
         response.setTemporada(analysis.getTemporada());
         response.setSafra(analysis.getSafra());
         response.setCoberturaVegetal(analysis.getCoberturaVegetalPercentual());
         response.setAreaTotalPercentual(analysis.getAreaTotalPorHectar());
+        response.setTemporada(analysis.getTemporada());
+        response.setTileUrl(analysis.getTileUrl());
+
         return response;
     }
 }
