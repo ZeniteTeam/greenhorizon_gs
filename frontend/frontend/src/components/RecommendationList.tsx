@@ -13,6 +13,7 @@ interface RecommendationListProps {
 }
 
 export function RecommendationList({ title, icon, items, ordered = false }: RecommendationListProps) {
+  console.log(items)
   return (
     <div className="flex flex-col gap-4">
       {(title || icon) && (

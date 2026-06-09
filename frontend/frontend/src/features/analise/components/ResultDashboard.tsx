@@ -39,6 +39,8 @@ function VerdictIcon({ verdict }: { verdict: string }) {
 }
 
 export function ResultDashboard({ analysis: a, compact = false, result }: ResultDashboardProps) {
+  console.log(a);
+  console.log(result);
   return (
     <div className="flex flex-col gap-4">
       {/* Header */}
@@ -133,14 +135,15 @@ export function ResultDashboard({ analysis: a, compact = false, result }: Result
           <RecommendationList
             title="Interpretação"
             icon={<Microscope size={22} />}
-            items={result.interpretacao ? result.interpretacao : []}
+            items={result.interpretacao ? result.interpretacao : a.interpretation 
+            }
           />
         </Card>
         <Card tint style={{ padding: 24 }}>
           <RecommendationList
             title="Recomendações"
             icon={<ClipboardList size={22} />}
-            items={result.recomendacao ? result.recomendacao : []}
+            items={result.recomendacao ? result.recomendacao : a.recommendations}
           />
         </Card>
       </div>

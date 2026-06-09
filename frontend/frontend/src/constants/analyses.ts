@@ -13,14 +13,33 @@ export const GH_ANALYSES: Analysis[] = [
     vigor: 'Bom',
     verdict: 'good',
     verdictLabel: 'Cultivo Saudável',
-    interpretation:
-      'A área apresenta bom vigor vegetativo, com NDVI dentro da faixa ideal para a fase atual da cultura. Pequenas áreas com índices mais baixos (amarelos e vermelhos) podem indicar variações de solo, manejo ou estresse hídrico pontual.',
+    interpretation:[
+      {
+        id: 1,
+        descricao: 'A área apresenta bom vigor vegetativo, com NDVI dentro da faixa ideal para a fase atual da cultura. Pequenas áreas com índices mais baixos (amarelos e vermelhos) podem indicar variações de solo, manejo ou estresse hídrico pontual.',
+      }
+    ],
     recommendations: [
-      'Manter o manejo atual, a lavoura apresenta bom desenvolvimento.',
-      'Monitorar áreas com NDVI mais baixo (vermelho e laranja).',
-      'Verificar disponibilidade hídrica nas próximas semanas.',
-      'Acompanhar pragas e doenças de acordo com o estágio da cultura.',
-      'Realizar nova análise em 15–20 dias para acompanhar a evolução.',
+      {
+        id: 1,
+        descricao: 'Manter o manejo atual, garantindo irrigação adequada e monitoramento contínuo.'
+      },
+      {
+        id: 2,
+        descricao: 'Monitorar áreas com NDVI mais baixo (vermelho e laranja).'
+      },
+      {
+        id: 3,
+        descricao: 'Verificar disponibilidade hídrica nas próximas semanas.'
+      },
+      {
+        id: 4,
+        descricao: 'Acompanhar pragas e doenças de acordo com o estágio da cultura.'
+      },
+      {
+        id: 5,
+        descricao: 'Realizar nova análise em 15–20 dias para acompanhar a evolução.'
+      },
     ],
   },
   {
@@ -36,13 +55,18 @@ export const GH_ANALYSES: Analysis[] = [
     verdict: 'warn',
     verdictLabel: 'Atenção pontual',
     interpretation:
-      'O vigor está ligeiramente abaixo da faixa ideal para o estágio atual. Manchas com NDVI baixo sugerem estresse hídrico e possível deficiência de nitrogênio na porção sul do talhão.',
+    [{
+      id: 1,
+      descricao: 'O vigor está ligeiramente abaixo da faixa ideal para o estágio atual. Manchas com NDVI baixo sugerem estresse hídrico e possível deficiência de nitrogênio na porção sul do talhão.',
+    }],
     recommendations: [
-      'Avaliar a disponibilidade hídrica e considerar irrigação suplementar.',
-      'Coletar amostras de solo nas áreas com NDVI mais baixo.',
-      'Revisar a adubação nitrogenada de cobertura.',
-      'Repetir a análise em 10 dias.',
-    ],
+      {id: 1, descricao: 'Verificar o sistema de irrigação e a umidade do solo nas áreas afetadas.'},
+      {
+        id: 2, descricao: 'Considerar aplicação de adubo nitrogenado de cobertura, especialmente nas áreas com NDVI mais baixo.'
+      },
+      {id: 3, descricao: 'Inspecionar a campo para identificar possíveis pragas ou doenças que possam estar contribuindo para o estresse.'  },
+      {id: 4, descricao: 'Realizar nova análise em 10–15 dias para monitorar a resposta às intervenções.'},
+    ],    
   },
   {
     id: 'a-2024-0415',
@@ -56,12 +80,25 @@ export const GH_ANALYSES: Analysis[] = [
     vigor: 'Excelente',
     verdict: 'good',
     verdictLabel: 'Vigor excelente',
-    interpretation:
-      'Cobertura vegetal uniforme e vigorosa em quase toda a área analisada, com NDVI no topo da faixa ideal. A lavoura está bem estabelecida para a fase de enchimento de grãos.',
+    interpretation: [
+      {
+        id: 1,
+        descricao: 'Cobertura vegetal uniforme e vigorosa em quase toda a área analisada, com NDVI no topo da faixa ideal. A lavoura está bem estabelecida para a fase de enchimento de grãos.',
+      }
+    ],
     recommendations: [
-      "Manter a lâmina d'água e o manejo atual.",
-      'Monitorar bordaduras com leve queda de índice.',
-      'Planejar a colheita conforme a maturação fisiológica.',
+      {
+        id: 1,
+        descricao: "Manter a lâmina d'água e o manejo atual."
+      },
+      {
+        id: 2,
+        descricao: 'Monitorar bordaduras com leve queda de índice.'
+      },
+      {
+        id: 3,
+        descricao: 'Planejar a colheita conforme a maturação fisiológica.'
+      },
     ],
   },
   {
@@ -76,13 +113,29 @@ export const GH_ANALYSES: Analysis[] = [
     vigor: 'Baixo',
     verdict: 'alert',
     verdictLabel: 'Estresse acentuado',
-    interpretation:
-      'Boa parte da área apresenta NDVI abaixo da faixa ideal, com predominância de tons amarelos e vermelhos. O padrão indica estresse hídrico acentuado e possível falha de estande na região central.',
+    interpretation: [
+      {
+        id: 1,
+        descricao: 'Boa parte da área apresenta NDVI abaixo da faixa ideal, com predominância de tons amarelos e vermelhos. O padrão indica estresse hídrico acentuado e possível falha de estande na região central.',
+      }
+    ],
     recommendations: [
-      'Inspecionar a campo as regiões em vermelho com urgência.',
-      'Verificar o sistema de irrigação e a compactação do solo.',
-      'Avaliar replantio nas falhas de estande, se viável.',
-      'Realizar nova análise em 7 dias.',
+      {
+        id: 1,
+        descricao: 'Inspecionar a campo as regiões em vermelho com urgência.'
+      },
+      {
+        id: 2,
+        descricao: 'Verificar o sistema de irrigação e a compactação do solo.'
+      },
+      {
+        id: 3,
+        descricao: 'Avaliar replantio nas falhas de estande, se viável.'
+      },
+      {
+        id: 4,
+        descricao: 'Realizar nova análise em 7 dias.'
+      },
     ],
   },
 ];
