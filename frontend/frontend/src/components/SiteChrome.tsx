@@ -70,12 +70,12 @@ export function SiteChrome({ route, navigate, children }: SiteChromeProps) {
       </main>
       <footer style={{ background: 'var(--surface-dark)', color: 'rgba(255,255,255,0.7)', padding: '32px 0' }}>
         <div
-          className="mx-auto px-6 flex items-center justify-between gap-6 flex-wrap"
+          className="mx-auto px-6 flex items-center justify-center gap-6 flex-wrap"
           style={{ maxWidth: 'var(--container)' }}
         >
-          <Logo tone="onDark" size={20} />
+          {/* <Logo tone="onDark" size={20} /> */}
           <span style={{ fontFamily: 'var(--font-sans)', fontSize: 13 }}>
-            Tecnologia de análise de solo acessível para todos · © 2024 Green Horizon
+            Tecnologia de análise de solo acessível para todos · © 2026 Green Horizon
           </span>
         </div>
       </footer>
