@@ -36,8 +36,6 @@ export function AnalysisModal({ analysis: a, onClose }: AnalysisModalProps) {
     areaTotalPercentual: a.areaTotalPercentual ?? parseFloat(a.area),
   };
 
-  console.log("resyldsa dsa",result);
-
   return (
     <div
       onClick={onClose}
