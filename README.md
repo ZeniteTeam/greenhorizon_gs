@@ -67,7 +67,7 @@ A aplicação é composta por três partes principais:
 
 Responsável pela interface visual do usuário, onde é possível interagir com o mapa, selecionar pontos e enviar a área escolhida para análise.
 
-### Microsserviço Java
+### API Java
 
 Responsável por atuar como camada intermediária da aplicação, utilizando **Java** com **Spring Boot** para estruturar parte da comunicação entre o frontend e os serviços responsáveis pela análise.
 
