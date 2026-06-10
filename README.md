@@ -242,22 +242,6 @@ O funcionamento geral do projeto segue este fluxo:
 9. O resultado é retornado para a aplicação.
 10. O usuário visualiza a análise da cobertura vegetal.
 
-## Requisitos para testar o projeto
-
-Para testar o projeto localmente, é necessário ter:
-
-* Node.js instalado.
-* NPM instalado.
-* Java instalado.
-* Maven
-* Python instalado.
-* Conta no Google Cloud.
-* Projeto configurado no Google Cloud.
-* Google Earth Engine habilitado.
-* ID do projeto configurado no código.
-* Dependências do frontend instaladas com `npm i`.
-* Dependências do serviço Python instaladas com `pip install -r requirements.txt`.
-
 ## Considerações finais
 
 O Green Horizon foi desenvolvido como uma solução acadêmica voltada ao uso de dados espaciais para resolver desafios reais da sociedade.
