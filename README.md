@@ -36,16 +36,19 @@ No projeto, o NDVI é utilizado para analisar a cobertura vegetal da área selec
 
 ## Tecnologias utilizadas
 
-### Frontend
+### Desenvolvimento Frontend
 
 * React
-* JavaScript
+* TypeScript
+
+### Ferramentas Frontend
+
 * Node.js
 * NPM
-
+  
 ### Backend
 
-* Java
+* Java 21
 * Spring Boot
 * Python
 * Google Earth Engine
@@ -158,17 +161,16 @@ http://localhost:5173
 
 ## Como rodar o backend
 
-O backend do projeto é dividido entre um microsserviço em **Java com Spring Boot** e um serviço em **Python** responsável pela integração com o Google Earth Engine.
+O backend do projeto é dividido entre uma API em **Java com Spring Boot**, que realiza a persistência de dados, junto de uma API em **Python** responsável pela integração com o Google Earth Engine.
 
 ### Microsserviço Java
 
-Para rodar o microsserviço Java, é necessário ter instalado:
+Para rodar o API Horizon em Java, é necessário ter instalado:
 
-* Java
+* Java 21+
 * Maven
-* Spring Boot configurado no projeto
 
-Acesse a pasta do microsserviço Java e execute o projeto pela IDE ou pelo terminal, conforme a configuração do repositório.
+Acesse a pasta do projeto e execute-o pela IDE ou pelo terminal, conforme a configuração do repositório.
 
 Exemplo com Maven:
 
@@ -209,7 +211,12 @@ source .venv/bin/activate
 Instale o FastAPI com as dependências padrão:
 
 ```bash
-pip install fastapi[standard]
+pip install "fastapi[standard]"
+```
+Instale-as as demais dependências dentro do arquivo requirements.txt
+
+```bash
+pip install -r requirements.txt
 ```
 
 Depois, execute o serviço Python pelo terminal:
