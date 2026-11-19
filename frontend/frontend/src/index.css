@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
 
 @theme {
   --color-green-950: #032318;
@@ -13,6 +13,42 @@
   --color-green-100: #edf3eb;
   --color-green-50: #f9fff8;
   --color-page: #f6f6f6;
+
+  /* Semantic tokens (Tailwind utilities: text-heading, bg-tint, border-hairline…) */
+  --color-heading: #3b3b3b;
+  --color-body: #636363;
+  --color-subtle: #717171;
+  --color-brand: #197b27;
+  --color-brand-hover: #15661f;
+  --color-section: #133c1e;
+  --color-card: #ffffff;
+  --color-tint: #edf3eb;
+  --color-wash: #f9fff8;
+  --color-dark: #032318;
+  --color-hairline: #ededed;
+  --color-tint-border: #c2d0ae;
+  --color-good: #197b27;
+  --color-good-bg: #edf3eb;
+  --color-warn: #b45f06;
+  --color-warn-bg: #fdf2e3;
+  --color-alert: #c9341d;
+  --color-alert-bg: #fcebe8;
+  --color-info: #2f5f9e;
+  --color-info-bg: #eaf1fa;
+
+  /* Data series (validated for CVD against the light surface) */
+  --color-field: #197b27;
+  --color-zone: #b8329a;
+  --color-zone-bg: #f8e9f4;
+  --color-rain: #3a78c9;
+  --color-cloud: #d9dde3;
+  --color-whatsapp: #128c4a;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --shadow-card: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  --shadow-soft: 0px 6px 16px rgba(3, 35, 24, 0.10);
 
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -49,6 +85,8 @@
   --ndvi-75:  #9bd13f;
   --ndvi-100: #197b27;
   --ndvi-gradient: linear-gradient(90deg, #e8442c 0%, #f5912b 25%, #f2d028 50%, #9bd13f 75%, #197b27 100%);
+  --moisture-gradient: linear-gradient(90deg, #eaf1fa 0%, #7fa7d6 50%, #1f4e8c 100%);
+  --change-gradient: linear-gradient(90deg, #c2560c 0%, #dedede 50%, #2f6db5 100%);
 
   /* Status */
   --status-good:     #197b27;
@@ -177,9 +215,11 @@ body {
 
 h1, h2, h3, h4, h5, h6, p { margin: 0; }
 
-a {
-  color: var(--text-brand);
-  text-decoration: none;
+@layer base {
+  a {
+    color: var(--text-brand);
+    text-decoration: none;
+  }
 }
 
 /* Eyebrow / metric label */
@@ -250,4 +290,10 @@ a {
     background: linear-gradient(180deg, transparent, rgba(114,202,70,.35), transparent);
     animation: gh-scan-kf 1.4s var(--ease-in-out) infinite;
   }
+}
+
+/* Keep Leaflet's internal z-indexes from escaping the map (sticky header, dialogs). */
+.leaflet-container {
+  isolation: isolate;
+  z-index: 0;
 }

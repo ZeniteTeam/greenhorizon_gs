@@ -5,6 +5,9 @@ import { Input } from '../../../components/Input';
 import { Logo } from '../../../components/Logo';
 import type { NavRoute } from '../../../types';
 import { useLogin } from '../hook/AuthHook';
+import { useAuthStore } from '../../../store/authStore';
+
+const DEMO_USER = { id: 0, name: 'Produtor demo', email: 'demo@greenhorizon.app' };
 
 interface LoginScreenProps {
   navigate: (route: NavRoute) => void;
@@ -14,7 +17,13 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { login, user, loading, error } = useLogin();
+  const { login, loading } = useLogin();
+  const setUser = useAuthStore((s) => s.setUser);
+
+  function enterDemo() {
+    setUser(DEMO_USER.id, DEMO_USER.name, DEMO_USER.email);
+    navigate('fields');
+  }
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -22,9 +31,9 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
     try {
 
       await login({ email, password });
-      navigate('analysis');
+      navigate('fields');
 
-    } catch (error) {
+    } catch {
 
       alert("E-mail ou senha incorretos. Tente novamente.");
 
@@ -152,8 +161,9 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
               size="md"
               fullWidth
               style={{ marginTop: 4 }}
+              disabled={loading}
             >
-              Entrar
+              {loading ? 'Entrando…' : 'Entrar'}
             </Button>
           </form>
 
@@ -173,9 +183,14 @@ export function LoginScreen({ navigate }: LoginScreenProps) {
           </div>
 
           {/* Create account */}
-          <Button variant="secondary" size="md" fullWidth>
-            Criar uma conta
-          </Button>
+          <div className="flex flex-col gap-2">
+            <Button variant="secondary" size="md" fullWidth>
+              Criar uma conta
+            </Button>
+            <Button variant="ghost" size="md" fullWidth onClick={enterDemo}>
+              Entrar com conta de demonstração
+            </Button>
+          </div>
         </div>
 
         {/* Footer */}

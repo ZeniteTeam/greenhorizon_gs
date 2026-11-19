@@ -33,13 +33,9 @@ export function MetricCard({ label, value, caption, icon, emphasis = 'green' }: 
         )}
       </div>
       <span
-        style={{
-          fontFamily: 'var(--font-sans)',
-          fontWeight: 'var(--fw-bold)',
-          fontSize: 36,
-          lineHeight: 1,
-          color: emphasis === 'green' ? 'var(--text-brand)' : 'var(--text-heading)',
-        }}
+        className={`text-[26px] leading-none font-bold whitespace-nowrap sm:text-4xl ${
+          emphasis === 'green' ? 'text-brand' : 'text-heading'
+        }`}
       >
         {value}
       </span>

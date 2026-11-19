@@ -14,8 +14,10 @@ import com.br.green_horizon.Horizon.analysis.infrastructure.repository.IAnaliseR
 import com.br.green_horizon.Horizon.analysis.infrastructure.repository.IInterpretacaoRepository;
 import com.br.green_horizon.Horizon.analysis.infrastructure.repository.IRecomendacaoRepository;
 import com.br.green_horizon.Horizon.user.infrastructure.repository.IUserRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.databind.ObjectMapper;
 
@@ -29,20 +31,28 @@ public class CalculateAnalysisUseCase {
     private final IInterpretacaoRepository interpretacaoRepository;
     private final IRecomendacaoRepository recomendacaoRepository;
     private final IUserRepository userRepository;
+    private final CalculationApiClient calculationApiClient;
 
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final String NO_DATA_STATUS = "Sem dados";
 
-    public CalculateAnalysisUseCase(IAnaliseRepository analiseRepository, IInterpretacaoRepository interpretacaoRepository, IRecomendacaoRepository recomendacaoRepository, IUserRepository userRepository) {
+    public CalculateAnalysisUseCase(IAnaliseRepository analiseRepository, IInterpretacaoRepository interpretacaoRepository, IRecomendacaoRepository recomendacaoRepository, IUserRepository userRepository, CalculationApiClient calculationApiClient) {
         this.analiseRepository = analiseRepository;
         this.interpretacaoRepository = interpretacaoRepository;
         this.recomendacaoRepository = recomendacaoRepository;
         this.userRepository = userRepository;
+        this.calculationApiClient = calculationApiClient;
     }
     public CreateAnalysisResponse CreateAnalysis(CreateAnalysisRequest request) throws Exception {
-        var calculationApiClient = new CalculationApiClient();
         try {
             var apiResponse = calculationApiClient.calculate(request);
-            var data = mapResponse((ResponseEntity<?>) apiResponse);
+            var data = mapResponse(apiResponse);
+
+            if (NO_DATA_STATUS.equals(data.get("status"))) {
+                // No clear satellite image of the area in the period: tell the user instead of failing.
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_CONTENT,
+                        String.valueOf(((List<?>) data.get("recomendacao")).get(0)));
+            }
 
             var analysis = AnalysisMapper.MapApiToAnalysis(data, new Analise());
 
@@ -63,6 +73,8 @@ public class CalculateAnalysisUseCase {
 
             return mappedAnalysis;
 
+        } catch (ResponseStatusException e) {
+            throw e;
         } catch (Exception e) {
           throw new Exception("Erro durante chamada de api", e);
         }

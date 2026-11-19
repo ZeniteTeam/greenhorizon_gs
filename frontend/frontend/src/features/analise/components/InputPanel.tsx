@@ -45,7 +45,7 @@ interface InputPanelProps {
   analyzing: boolean;
 }
 
-export function InputPanel({ onSave, crop, setCrop, onAnalyze, analyzing }: InputPanelProps) {
+export function InputPanel({ onSave, crop, setCrop, analyzing }: InputPanelProps) {
   return (
     <Card
       padding={24}

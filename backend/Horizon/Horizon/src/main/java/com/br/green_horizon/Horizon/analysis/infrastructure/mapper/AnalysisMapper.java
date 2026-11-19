@@ -15,12 +15,14 @@ import java.util.Map;
 public class AnalysisMapper {
 
 
+
     public static Analise MapApiToAnalysis(Map<String, Object> data, Analise analise) {
         try {
 
             analise.setNdviMedia(((Number) data.get("ndvi")).doubleValue());
             analise.setTileUrl((String) data.get("tile_url"));
-            analise.setStatus(Status.valueOf((String) data.get("status")));
+            // The calculation service writes "Médio" with an accent; the enum constant is Medio.
+            analise.setStatus(Status.valueOf(((String) data.get("status")).replace("é", "e")));
             analise.setDate(new Date());
             analise.setAreaTotalPorHectar(((Number) data.get("area_total_ha")).doubleValue());
             analise.setCoberturaVegetalPercentual(((Number)data.get("cobertura_vegetal_percentual")).doubleValue());

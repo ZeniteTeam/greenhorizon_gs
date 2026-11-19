@@ -19,7 +19,7 @@ export function AnalysisScreen({ onSaved }: AnalysisScreenProps) {
 
   const [points, setPoints] = useState([]); 
 
-  const {createAnalysis, analise, loading, error} = useCreateAnalysis();
+  const { createAnalysis, analise } = useCreateAnalysis();
 
   function handleAnalyze() {
     setAnalyzed(false);

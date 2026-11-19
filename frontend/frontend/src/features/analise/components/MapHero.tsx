@@ -1,5 +1,5 @@
 import { PenTool } from 'lucide-react';
-import { MapContainer, TileLayer, FeatureGroup, useMap } from 'react-leaflet';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
 import * as turf from '@turf/turf';
 import 'leaflet/dist/leaflet.css';
 import '@geoman-io/leaflet-geoman-free/dist/leaflet-geoman.css';
@@ -100,8 +100,8 @@ const GeomanControles: React.FC<GeomanControlesProps> = ({ onPerimetroCalculado,
 
 export function MapHero({ handleChangePoints, analyzed, analyzing, minHeight = 440, tileUrl }: MapHeroProps) {
 
-  const [perimetro, setPerimetro] = useState<number>(0);
-  const [coordenadas, setCoordenadas] = useState<Coordenada[]>([]);
+  const [, setPerimetro] = useState<number>(0);
+  const [coordenadas] = useState<Coordenada[]>([]);
 
   useEffect(() => {
     if (coordenadas.length > 0) {

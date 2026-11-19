@@ -9,42 +9,30 @@ interface NavbarProps {
 
 export function Navbar({ links, trailing }: NavbarProps) {
   return (
-    <header
-      className="flex items-center w-full"
-      style={{
-        height: 'var(--navbar-h)',
-        background: 'var(--surface-dark)',
-      }}
-    >
-      <div
-        className="w-full flex items-center justify-between gap-6 mx-auto px-6"
-        style={{ maxWidth: 'var(--container)' }}
-      >
-        <Logo tone="onDark" size={24} />
-        <nav className="flex items-center gap-7">
+    <header className="sticky top-0 z-[900] flex h-(--navbar-h) w-full items-center bg-dark print:hidden">
+      <div className="mx-auto flex w-full max-w-(--container) items-center justify-between gap-6 px-4 sm:px-6">
+        <span className="flex-shrink-0 lg:hidden">
+          <Logo tone="onDark" size={24} showWordmark={false} />
+        </span>
+        <span className="hidden flex-shrink-0 lg:block">
+          <Logo tone="onDark" size={24} />
+        </span>
+        <nav className="hidden min-w-0 flex-1 items-center justify-end gap-7 whitespace-nowrap md:flex">
           {links.map((l) => (
-            <a
+            <button
               key={l.label}
-              href="#"
-              onClick={(e) => {
-                e.preventDefault();
-                l.onClick();
-              }}
-              style={{
-                fontFamily: 'var(--font-sans)',
-                fontWeight: l.active ? 'var(--fw-semibold)' : 'var(--fw-medium)',
-                fontSize: 15,
-                color: l.active ? 'var(--white)' : 'rgba(255,255,255,0.66)',
-                paddingBottom: 2,
-                borderBottom: l.active ? '2px solid var(--green-400)' : '2px solid transparent',
-                textDecoration: 'none',
-              }}
+              type="button"
+              onClick={l.onClick}
+              aria-current={l.active ? 'page' : undefined}
+              className={`border-b-2 pb-0.5 text-[15px] transition ${
+                l.active ? 'border-green-400 font-semibold text-white' : 'border-transparent font-medium text-white/65 hover:text-white'
+              }`}
             >
               {l.label}
-            </a>
+            </button>
           ))}
-          {trailing}
         </nav>
+        <div className="flex flex-shrink-0 items-center gap-2">{trailing}</div>
       </div>
     </header>
   );

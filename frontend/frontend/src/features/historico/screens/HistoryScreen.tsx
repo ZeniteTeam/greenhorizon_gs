@@ -53,7 +53,7 @@ function mapToAnalysis(a: AnalysisResponse): Analysis {
 export function HistoryScreen({ onOpen }: HistoryScreenProps) {
   const items = GH_ANALYSES;
 
-  const { getAnalysis, analises, loading, error } = useGetAnalysis();
+  const { getAnalysis, analises } = useGetAnalysis();
 
   useEffect(() => {
     getAnalysis();
