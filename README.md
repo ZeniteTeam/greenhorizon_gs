@@ -1,24 +1,39 @@
 # Green Horizon
 
+> **O satélite aponta onde está o problema, o celular do produtor confirma o que é, e a comunidade inteira é avisada.**
+
 ## Sobre o projeto
 
-O **Green Horizon** é uma aplicação desenvolvida para auxiliar no monitoramento de áreas agrícolas, por meio de imagens de satélite e cálculo de NDVI.
+O **Green Horizon** é um sistema de alerta precoce para a agricultura familiar. Ele acompanha cada talhão com imagens de satélite, encontra as partes da lavoura que perderam vigor, pede ao produtor uma foto da folha naquele ponto, explica o problema em português simples e avisa os produtores vizinhos quando um foco de doença é confirmado.
 
-A proposta do projeto é permitir que o usuário selecione uma área no mapa, envie os pontos dessa área para o sistema e receba uma análise da cobertura vegetal com base em dados de satélite. O projeto utiliza imagens do **Sentinel-2**, acessadas por meio do **Google Earth Engine**, para calcular o índice NDVI e apoiar a interpretação da saúde da vegetação.
+O projeto usa imagens do **Sentinel-2**, acessadas pelo **Google Earth Engine**, para calcular índices de vegetação (NDVI e NDMI). Os dados de chuva vêm do **CHIRPS** e a previsão do tempo, da **Open-Meteo**.
 
-O Green Horizon foi pensado principalmente para pequenos e médios produtores e contextos agrícolas, oferecendo uma forma mais simples e acessível de visualizar dados ambientais e apoiar decisões relacionadas ao plantio, manejo e acompanhamento da lavoura.
+Foi pensado para pequenos e médios produtores, com uma interface leve, linguagem simples e foco em decisões práticas: onde olhar, o que fazer e quem chamar.
 
-## Objetivo
+## Funcionalidades
 
-O objetivo principal do Green Horizon é conectar dados espaciais a problemas reais da sociedade, utilizando imagens de satélite para gerar informações úteis sobre áreas agrícolas.
+### 1. Satélite: onde está o problema
+* Série de NDVI (vigor) e NDMI (umidade) da safra inteira, a cada passagem do Sentinel-2.
+* Comparação com a **curva esperada** da cultura (soja, milho, arroz) para a fase em que ela está.
+* **Detecção de zonas sob estresse**: áreas que perderam vigor entre duas passagens, com área em hectares, queda de vigor e um ponto indicado para a vistoria.
+* Chuva acumulada comparada com a média histórica de 30 anos.
+* Passagens cobertas por nuvens são identificadas e não entram no cálculo.
 
-Com a aplicação, o usuário pode:
+### 2. Celular: o que é
+* O produtor vai até o ponto indicado e tira uma foto da folha.
+* A foto é analisada e o sistema devolve a suspeita mais provável, alternativas e o nível de confiança.
+* O produtor confirma ou descarta a suspeita; fotos confirmadas viram dado de referência.
 
-* Selecionar uma área de interesse no mapa.
-* Enviar as coordenadas para análise.
-* Calcular o NDVI da área selecionada.
-* Visualizar uma estimativa da cobertura vegetal.
-* Apoiar decisões relacionadas ao monitoramento agrícola.
+### 3. Explicação em linguagem simples
+* Resumo do que a foto e o satélite mostram, em frases curtas.
+* Passos práticos do que fazer, com leitura em voz alta pelo navegador.
+* Uso responsável de IA: o sistema nunca recomenda produto ou dose e sempre orienta confirmar com um técnico da Emater ou da cooperativa.
+
+### 4. Comunidade: quem é avisado
+* Mapa regional de focos confirmados.
+* Alerta para produtores num raio de 15 km do foco.
+* Lista de prioridade de visitas para técnicos e solicitação de visita pelo produtor.
+* Central de notificações.
 
 ## O que é NDVI?
 
@@ -32,90 +47,88 @@ De forma simplificada:
 * Valores próximos de **0** indicam solo exposto, áreas urbanas ou pouca vegetação.
 * Valores negativos geralmente indicam água, sombra ou superfícies sem vegetação.
 
-No projeto, o NDVI é utilizado para analisar a cobertura vegetal da área selecionada pelo usuário.
+O **NDMI** usa o infravermelho próximo e o infravermelho de ondas curtas para estimar a umidade da vegetação. Juntos, os dois índices ajudam a diferenciar falta de água de doença ou praga.
 
 ## Tecnologias utilizadas
 
-### Desenvolvimento Frontend
+### Frontend
+* React + TypeScript (Vite)
+* Tailwind CSS
+* Leaflet / React Leaflet (mapas)
+* TanStack Query (dados do servidor) e Zustand (estado da interface)
+* React Hook Form + Zod (formulários)
+* Axios
+* Lucide (ícones)
 
-* React
-* TypeScript
-
-### Ferramentas Frontend
-
-* Node.js
-* NPM
-  
-### Backend
-
+### API Java (Horizon)
 * Java 21
 * Spring Boot
-* Python
+* Spring Events (comunicação entre os módulos `monitoring`, `community` e `notification`)
+* H2 (banco em memória)
+
+### Serviço Python (Calculations)
+* Python 3.12+
+* FastAPI
 * Google Earth Engine
-* Geemap
+* Gemini (diagnóstico da foto da folha, com modo simulado)
 
-### Dados de satélite
-
+### Dados
 * Sentinel-2 Surface Reflectance Harmonized
-* Google Earth Engine
+* CHIRPS Daily (chuva)
+* Open-Meteo (previsão do tempo)
 
 ## Estrutura geral do projeto
 
-A aplicação é composta por três partes principais:
+```
+greenhorizon_gs/
+├── frontend/frontend/          # Aplicação web (React)
+└── backend/
+    ├── Horizon/Horizon/        # API Java (Spring Boot) - porta 8080
+    └── Calculations/           # Serviço Python (FastAPI) - porta 8000
+```
 
 ### Frontend
-
-Responsável pela interface visual do usuário, onde é possível interagir com o mapa, selecionar pontos e enviar a área escolhida para análise.
+Interface do produtor: lista de talhões, mapa com zonas sob estresse, gráficos da safra, envio de foto, diagnóstico, comunidade e notificações. Conversa somente com a API Java.
 
 ### API Java
-
-Responsável por atuar como camada intermediária da aplicação, utilizando **Java** com **Spring Boot** para estruturar parte da comunicação entre o frontend e os serviços responsáveis pela análise.
+Camada central da aplicação. Guarda talhões, zonas, focos e notificações, aplica as regras de negócio (detecção de zonas, risco de doença, alerta aos vizinhos) e chama o serviço Python.
 
 ### Serviço Python
+Serviço interno, chamado apenas pela API Java. Acessa o Google Earth Engine para calcular as séries de NDVI/NDMI, detectar zonas e gerar as camadas do mapa, e faz o diagnóstico da foto da folha.
 
-Responsável por receber os pontos enviados, construir o polígono da área selecionada, acessar as imagens de satélite pelo Google Earth Engine e calcular o NDVI e outras métricas.
+| Endpoint | Função |
+|---|---|
+| `POST /fields/analyze` | Análise da safra de um talhão (passagens, chuva e zonas) |
+| `POST /fields/tiles` | Camada do mapa (NDVI, NDMI ou mudança) de uma passagem |
+| `POST /leaf/diagnose` | Diagnóstico da foto da folha |
+| `POST /calculate` | Análise pontual de NDVI de uma área desenhada |
 
 ## Configuração do Google Earth Engine
 
-Para que o cálculo do NDVI funcione corretamente, é necessário configurar o acesso ao **Google Earth Engine**.
+Para que os cálculos de satélite funcionem, é necessário configurar o acesso ao **Google Earth Engine**.
 
-### 1. Criar uma conta no Google Cloud
+### 1. Criar uma conta e um projeto no Google Cloud
 
-Antes de utilizar o Google Earth Engine, é necessário ter uma conta no **Google Cloud**.
+Crie uma conta no **Google Cloud**, caso ainda não tenha, e depois crie um projeto. Esse projeto será usado para conectar o serviço Python ao Earth Engine.
 
-Acesse o Google Cloud e crie uma conta, caso ainda não tenha uma.
+### 2. Ativar o Google Earth Engine
 
-### 2. Criar um projeto no Google Cloud
+Cadastre e habilite o uso do **Google Earth Engine** para essa conta/projeto. O Earth Engine exige uma conta cadastrada e autorizada para acessar os dados.
 
-Depois de criar a conta, crie um projeto no Google Cloud.
+### 3. Autenticar a máquina
 
-Esse projeto será utilizado para conectar o ambiente Python ao Google Earth Engine.
+Com o ambiente virtual do serviço Python ativo (veja abaixo), rode uma vez:
 
-### 3. Ativar o Google Earth Engine
-
-Após criar o projeto, é necessário cadastrar e habilitar o uso do **Google Earth Engine** para essa conta/projeto.
-
-O Google Earth Engine exige que o usuário tenha uma conta cadastrada e autorizada para acessar os dados e executar análises.
-
-### 4. Conectar o projeto ao código
-
-No serviço Python, o projeto do Google Cloud precisa ser informado no momento da inicialização do Earth Engine.
-
-Exemplo:
-
-```python
-import ee
-
-ee.Authenticate()
-ee.Initialize(project="SEU_ID_DO_PROJETO")
+```bash
+earthengine authenticate
 ```
 
-Substitua `"SEU_ID_DO_PROJETO"` pelo ID do projeto criado no Google Cloud.
+### 4. Informar o projeto
 
-Exemplo usado no desenvolvimento:
+Copie `backend/Calculations/.env.example` para `backend/Calculations/.env` e preencha o ID do projeto:
 
-```python
-ee.Initialize(project="powerful-balm-394623")
+```bash
+EE_PROJECT=SEU_ID_DO_PROJETO
 ```
 
 ### Observação importante sobre a licença
@@ -124,73 +137,29 @@ Este projeto utiliza uma configuração não comercial do Google Cloud/Google Ea
 
 Por isso, o acesso pode estar sujeito a limitações de uso e tempo. No ambiente utilizado durante o desenvolvimento, a licença possui um limite aproximado de **150 horas** e pode expirar.
 
-Caso o projeto deixe de autenticar ou apresente erro ao acessar o Earth Engine, pode ser necessário criar ou reativar um projeto no Google Cloud, habilitar novamente o Google Earth Engine, refazer a autenticação com `ee.Authenticate()` e atualizar o ID do projeto no código.
+Caso o projeto deixe de autenticar ou apresente erro ao acessar o Earth Engine, pode ser necessário criar ou reativar um projeto no Google Cloud, habilitar novamente o Google Earth Engine, refazer a autenticação e atualizar o `EE_PROJECT` no `.env`.
 
-## Como rodar o frontend
+## Diagnóstico da foto (Gemini)
 
-Para rodar o frontend, é necessário ter instalado:
+O diagnóstico da folha pode funcionar de dois jeitos, definidos no `backend/Calculations/.env`:
 
-* Node.js
-* NPM
+| Configuração | Comportamento |
+|---|---|
+| `GEMINI_MOCK=true` (padrão) | Diagnóstico **simulado**: resposta pronta por cultura (ex.: soja → ferrugem asiática). Não precisa de chave e não chama o Gemini. |
+| `GEMINI_MOCK=false` | Usa o **Gemini** de verdade. Precisa de `GEMINI_API_KEY` (Google AI Studio). |
 
-Depois de clonar o repositório, acesse a pasta do frontend:
+No modo real, cada foto é analisada uma única vez (o resultado fica em cache) e o número de chamadas por dia é limitado por `GEMINI_DAILY_LIMIT`, para ficar dentro da cota gratuita.
 
-```bash
-cd frontend
-```
+## Como rodar o projeto
 
-Instale as dependências do projeto:
+São três serviços, cada um no seu terminal. Suba na ordem: **Python → Java → Frontend**.
 
-```bash
-npm i
-```
+### 1. Serviço Python (porta 8000)
 
-Depois, rode o projeto em ambiente de desenvolvimento:
+Requisitos: Python 3.12 ou superior.
 
 ```bash
-npm run dev
-```
-
-Após executar o comando, o terminal irá mostrar o endereço local para acessar a aplicação no navegador.
-
-Normalmente, o endereço será algo parecido com:
-
-```bash
-http://localhost:5173
-```
-
-## Como rodar o backend
-
-O backend do projeto é dividido entre uma API em **Java com Spring Boot**, que realiza a persistência de dados, junto de uma API em **Python** responsável pela integração com o Google Earth Engine.
-
-### Microsserviço Java
-
-Para rodar o API Horizon em Java, é necessário ter instalado:
-
-* Java 21+
-* Maven
-
-Acesse a pasta do projeto e execute-o pela IDE ou pelo terminal, conforme a configuração do repositório.
-
-Exemplo com Maven:
-
-```bash
-mvn spring-boot:run
-```
-
-### Serviço Python
-
-Para rodar o serviço Python, é necessário ter o Python instalado.
-
-Acesse a pasta do serviço Python:
-
-```bash
-cd Calculations
-```
-
-Crie um ambiente virtual:
-
-```bash
+cd backend/Calculations
 python -m venv .venv
 ```
 
@@ -208,44 +177,90 @@ No Linux ou Mac:
 source .venv/bin/activate
 ```
 
-Instale o FastAPI com as dependências padrão:
-
-```bash
-pip install "fastapi[standard]"
-```
-Instale-as as demais dependências dentro do arquivo requirements.txt
+Instale as dependências e configure o `.env`:
 
 ```bash
 pip install -r requirements.txt
+cp .env.example .env    # no Windows: copy .env.example .env
 ```
 
-Depois, execute o serviço Python pelo terminal:
+Inicie o serviço:
 
 ```bash
-fastapi dev
+uvicorn main:app --port 8000
 ```
 
-Esse comando iniciará o serviço em ambiente de desenvolvimento, permitindo que ele receba as requisições necessárias para realizar a análise com o Google Earth Engine.
+A documentação interativa fica em `http://localhost:8000/docs`.
+
+### 2. API Java (porta 8080)
+
+Requisitos: **Java 21** (não precisa instalar o Maven; o projeto usa o Maven Wrapper).
+
+```bash
+cd backend/Horizon/Horizon
+./mvnw spring-boot:run      # no Windows: mvnw.cmd spring-boot:run
+```
+
+Também é possível rodar pela IDE (IntelliJ), executando a classe `HorizonApplication` com o JDK 21.
+
+> Se o terminal acusar uma versão antiga do Java, aponte o `JAVA_HOME` para o JDK 21 antes de rodar.
+
+A API Java procura o serviço Python em `http://localhost:8000`. Para mudar, defina a variável `CALCULATION_API_URL`.
+
+### 3. Frontend (porta 5173)
+
+Requisitos: Node.js e NPM.
+
+```bash
+cd frontend/frontend
+npm i
+npm run dev
+```
+
+Acesse `http://localhost:5173`.
+
+O frontend lê as variáveis de `frontend/frontend/.env.local` (veja `.env.example`):
+
+| Variável | Uso |
+|---|---|
+| `VITE_API_URL` | Endereço da API Java (padrão `http://localhost:8080`) |
+| `VITE_USE_DEMO` | `true` = usa um cenário de demonstração embutido, sem precisar do backend |
+
+## Dados de demonstração
+
+A API Java usa um banco **H2 em memória** e carrega `data.sql` toda vez que inicia. Os talhões ficam em coordenadas reais de Sorriso (MT), e os dados de satélite são buscados ao vivo no Earth Engine.
+
+**Conta de teste:**
+
+| E-mail | Senha |
+|---|---|
+| `conta@gmail.com` | `123455` |
+
+* O **Talhão 1** já vem com uma **zona sob estresse** aguardando foto, para demonstrar o fluxo completo.
+* Para voltar ao estado inicial (por exemplo, depois de confirmar ou descartar a zona), basta **reiniciar a API Java**.
 
 ## Fluxo de funcionamento
 
-O funcionamento geral do projeto segue este fluxo:
-
-1. O usuário acessa o frontend.
-2. O usuário seleciona pontos no mapa.
-3. O frontend envia as coordenadas para o microsserviço Java.
-4. O microsserviço Java encaminha ou organiza a comunicação com o serviço Python.
-5. O serviço Python transforma os pontos em um polígono.
-6. O Google Earth Engine busca imagens Sentinel-2 da área selecionada.
-7. O sistema filtra imagens com baixa presença de nuvens.
-8. O serviço Python calcula o NDVI da área.
-9. O resultado é retornado para a aplicação.
-10. O usuário visualiza a análise da cobertura vegetal.
+1. O produtor entra no aplicativo e vê seus talhões e a saúde de cada um.
+2. A API Java pede ao serviço Python a análise da safra de cada talhão.
+3. O serviço Python busca as passagens do Sentinel-2 no Earth Engine, descarta as nuvens e calcula NDVI e NDMI.
+4. Comparando a passagem mais recente com uma de cerca de 10 dias antes, ele encontra as **zonas que perderam vigor**.
+5. A API Java registra a zona, cria a notificação e mostra no mapa o ponto que deve ser visitado.
+6. O produtor vai até o ponto e envia uma **foto da folha**.
+7. O serviço Python devolve o **diagnóstico** com explicação em linguagem simples.
+8. O produtor **confirma** a suspeita.
+9. O foco entra no **mapa da comunidade** e os produtores num raio de 15 km são **avisados**.
 
 ## Considerações finais
 
-O Green Horizon foi desenvolvido como uma solução acadêmica voltada ao uso de dados espaciais para resolver desafios reais da sociedade.
+O Green Horizon foi desenvolvido como uma solução acadêmica para a Global Solution da FIAP, voltada ao uso de dados espaciais para resolver desafios reais da sociedade.
 
-A aplicação demonstra como tecnologias de satélite, mapas interativos, microsserviços e análise de dados podem ser combinados para apoiar o monitoramento agrícola e facilitar o acesso a informações sobre a saúde da vegetação.
+A aplicação mostra como imagens de satélite, a câmera do celular e a força da comunidade podem ser combinadas para encontrar problemas na lavoura mais cedo, quando ainda dá tempo de agir.
 
-O projeto ainda pode evoluir com novas funcionalidades, como histórico de análises mais complexo, comparação entre períodos, integração com dados climáticos e dashboards mais completos para acompanhamento das áreas analisadas.
+Próximos passos possíveis:
+
+* Autenticação real com JWT (hoje o usuário é identificado por um cabeçalho simples).
+* Banco PostgreSQL com PostGIS no lugar do H2.
+* Envio de alertas por WhatsApp.
+* Tela para o produtor cadastrar um novo talhão.
+* Publicação na nuvem (Cloud Run, Pub/Sub, Cloud Scheduler, Cloud SQL).
