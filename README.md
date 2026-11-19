@@ -36,16 +36,19 @@ No projeto, o NDVI é utilizado para analisar a cobertura vegetal da área selec
 
 ## Tecnologias utilizadas
 
-### Frontend
+### Desenvolvimento Frontend
 
 * React
-* JavaScript
+* TypeScript
+
+### Ferramentas Frontend
+
 * Node.js
 * NPM
-
+  
 ### Backend
 
-* Java
+* Java 21
 * Spring Boot
 * Python
 * Google Earth Engine
@@ -64,7 +67,7 @@ A aplicação é composta por três partes principais:
 
 Responsável pela interface visual do usuário, onde é possível interagir com o mapa, selecionar pontos e enviar a área escolhida para análise.
 
-### Microsserviço Java
+### API Java
 
 Responsável por atuar como camada intermediária da aplicação, utilizando **Java** com **Spring Boot** para estruturar parte da comunicação entre o frontend e os serviços responsáveis pela análise.
 
@@ -158,17 +161,16 @@ http://localhost:5173
 
 ## Como rodar o backend
 
-O backend do projeto é dividido entre um microsserviço em **Java com Spring Boot** e um serviço em **Python** responsável pela integração com o Google Earth Engine.
+O backend do projeto é dividido entre uma API em **Java com Spring Boot**, que realiza a persistência de dados, junto de uma API em **Python** responsável pela integração com o Google Earth Engine.
 
 ### Microsserviço Java
 
-Para rodar o microsserviço Java, é necessário ter instalado:
+Para rodar o API Horizon em Java, é necessário ter instalado:
 
-* Java
+* Java 21+
 * Maven
-* Spring Boot configurado no projeto
 
-Acesse a pasta do microsserviço Java e execute o projeto pela IDE ou pelo terminal, conforme a configuração do repositório.
+Acesse a pasta do projeto e execute-o pela IDE ou pelo terminal, conforme a configuração do repositório.
 
 Exemplo com Maven:
 
@@ -209,7 +211,12 @@ source .venv/bin/activate
 Instale o FastAPI com as dependências padrão:
 
 ```bash
-pip install fastapi[standard]
+pip install "fastapi[standard]"
+```
+Instale-as as demais dependências dentro do arquivo requirements.txt
+
+```bash
+pip install -r requirements.txt
 ```
 
 Depois, execute o serviço Python pelo terminal:
@@ -234,22 +241,6 @@ O funcionamento geral do projeto segue este fluxo:
 8. O serviço Python calcula o NDVI da área.
 9. O resultado é retornado para a aplicação.
 10. O usuário visualiza a análise da cobertura vegetal.
-
-## Requisitos para testar o projeto
-
-Para testar o projeto localmente, é necessário ter:
-
-* Node.js instalado.
-* NPM instalado.
-* Java instalado.
-* Maven
-* Python instalado.
-* Conta no Google Cloud.
-* Projeto configurado no Google Cloud.
-* Google Earth Engine habilitado.
-* ID do projeto configurado no código.
-* Dependências do frontend instaladas com `npm i`.
-* Dependências do serviço Python instaladas com `pip install -r requirements.txt`.
 
 ## Considerações finais
 
